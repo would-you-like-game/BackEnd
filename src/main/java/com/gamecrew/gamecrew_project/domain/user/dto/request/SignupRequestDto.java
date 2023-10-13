@@ -1,7 +1,6 @@
 package com.gamecrew.gamecrew_project.domain.user.dto.request;
 
 import com.gamecrew.gamecrew_project.global.message.ErrorMessage;
-import com.gamecrew.gamecrew_project.global.message.Message;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
