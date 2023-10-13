@@ -23,4 +23,18 @@ public class SignUpController {
         signupService.signup(requestDto);
         return new MessageResponseDto(Message.SIGNUP_SUCCESSFUL, HttpStatus.OK);
     }
+
+    //닉네임 중복확인
+    @PostMapping("/signup/nickname")
+    public MessageResponseDto checkNickname(@RequestBody @Valid SignupRequestDto requestDto){
+        signupService.checkNickname(requestDto);
+        return new MessageResponseDto(Message.AVAILABLE_NICKNAME, HttpStatus.OK);
+    }
+
+    //이메일 중복확인
+    @PostMapping("/signup/email")
+    public MessageResponseDto checkEmail(@RequestBody @Valid SignupRequestDto requestDto) {
+        signupService.checkEmail(requestDto);
+        return new MessageResponseDto(Message.AVAILABLE_EMAIL, HttpStatus.OK);
+    }
 }
