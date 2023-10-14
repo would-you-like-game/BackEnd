@@ -1,4 +1,4 @@
-package com.gamecrew.gamecrew_project.global.message;
+package com.gamecrew.gamecrew_project.global.response;
 
 import org.springframework.http.HttpStatus;
 

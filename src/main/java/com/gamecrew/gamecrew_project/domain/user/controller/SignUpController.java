@@ -2,8 +2,8 @@ package com.gamecrew.gamecrew_project.domain.user.controller;
 
 import com.gamecrew.gamecrew_project.domain.user.dto.request.SignupRequestDto;
 import com.gamecrew.gamecrew_project.domain.user.service.SignUpService;
-import com.gamecrew.gamecrew_project.global.message.Message;
-import com.gamecrew.gamecrew_project.global.message.MessageResponseDto;
+import com.gamecrew.gamecrew_project.global.response.constant.Message;
+import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

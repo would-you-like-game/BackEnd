@@ -1,4 +1,4 @@
-package com.gamecrew.gamecrew_project.global.message;
+package com.gamecrew.gamecrew_project.global.response.constant;
 
 public class Message {
     public static final String SIGNUP_SUCCESSFUL = "회원가입을 완료하였습니다.";
