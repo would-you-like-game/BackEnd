@@ -1,4 +1,4 @@
-package com.gamecrew.gamecrew_project.global.message;
+package com.gamecrew.gamecrew_project.global.exception.constant;
 
 public class ErrorMessage {
     public static final String INVALID_EMAIL_FORMAT = "잘못된 이메일 형식입니다.";
