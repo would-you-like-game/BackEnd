@@ -32,11 +32,12 @@ public class Post extends PostTime {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Post(PostRequestDto requestDto){
+    public Post(PostRequestDto requestDto, User user){
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.totalNumber = requestDto.getTotalNumber();
         this.category = requestDto.getCategory();
+        this.user = user;
     }
 
     public void update(PostRequestDto requestDto) {
