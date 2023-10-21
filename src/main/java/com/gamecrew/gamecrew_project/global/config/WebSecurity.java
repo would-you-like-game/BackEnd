@@ -41,7 +41,7 @@ public class WebSecurity {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userRepository);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }
@@ -65,7 +65,7 @@ public class WebSecurity {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
-                        .requestMatchers("/user/**","/user/signup/**","/auth/**").permitAll()
+                        .requestMatchers("/user/**","/auth/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
