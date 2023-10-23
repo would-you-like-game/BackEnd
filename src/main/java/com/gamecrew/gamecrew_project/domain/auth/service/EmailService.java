@@ -1,5 +1,7 @@
 package com.gamecrew.gamecrew_project.domain.auth.service;
 
+import com.gamecrew.gamecrew_project.global.exception.FailedToSendEmailException;
+import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
@@ -7,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -73,7 +76,7 @@ public class EmailService {
             javaMailSender.send(message); // 메일 발송
         }catch(MailException es){
             es.printStackTrace();
-            throw new IllegalArgumentException();
+            throw new FailedToSendEmailException(ErrorMessage.FAILED_TO_SEND_EMAIL, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return ePw; // 메일로 보냈던 인증 코드를 서버로 리턴
     }

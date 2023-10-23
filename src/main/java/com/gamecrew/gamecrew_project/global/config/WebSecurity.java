@@ -1,6 +1,5 @@
 package com.gamecrew.gamecrew_project.global.config;
 
-import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.jwt.JwtUtil;
 import com.gamecrew.gamecrew_project.global.security.JwtAuthenticationFilter;
 import com.gamecrew.gamecrew_project.global.security.JwtAuthorizationFilter;
@@ -27,7 +26,6 @@ public class WebSecurity {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
-    private final UserRepository userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
