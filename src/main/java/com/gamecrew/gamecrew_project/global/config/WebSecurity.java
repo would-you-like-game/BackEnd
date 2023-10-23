@@ -1,5 +1,6 @@
 package com.gamecrew.gamecrew_project.global.config;
 
+import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.jwt.JwtUtil;
 import com.gamecrew.gamecrew_project.global.security.JwtAuthenticationFilter;
 import com.gamecrew.gamecrew_project.global.security.JwtAuthorizationFilter;
@@ -26,6 +27,7 @@ public class WebSecurity {
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final UserRepository userRepository;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,7 +65,7 @@ public class WebSecurity {
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
                         .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
-                        .requestMatchers("/user/**,/auth/login").permitAll() // '/user/'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers("/user/**","/auth/**").permitAll()
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
