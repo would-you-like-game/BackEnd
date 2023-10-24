@@ -42,6 +42,9 @@ dependencies {
     // mail
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 
+    //websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
