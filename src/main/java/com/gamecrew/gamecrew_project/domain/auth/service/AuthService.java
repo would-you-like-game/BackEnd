@@ -30,11 +30,11 @@ public class AuthService {
         String password = requestDto.getPassword();
 
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new MismatchException(ErrorMessage.NON_EXISTENT_EMAIL, HttpStatus.BAD_REQUEST)
+                () -> new MismatchException(ErrorMessage.NON_EXISTENT_EMAIL, HttpStatus.UNAUTHORIZED)
         );
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new MismatchException(ErrorMessage.PASSWORD_MISMATCH, HttpStatus.BAD_REQUEST);
+            throw new MismatchException(ErrorMessage.PASSWORD_MISMATCH, HttpStatus.UNAUTHORIZED);
         }
         // 인증에 성공하면 JWT 토큰을 생성합니다.
         String token = jwtUtil.createToken(email);
