@@ -1,8 +1,8 @@
 package com.gamecrew.gamecrew_project.global.config;
 
+import com.gamecrew.gamecrew_project.global.jwt.JwtAuthenticationFilter;
+import com.gamecrew.gamecrew_project.global.jwt.JwtAuthorizationFilter;
 import com.gamecrew.gamecrew_project.global.jwt.JwtUtil;
-import com.gamecrew.gamecrew_project.global.security.JwtAuthenticationFilter;
-import com.gamecrew.gamecrew_project.global.security.JwtAuthorizationFilter;
 import com.gamecrew.gamecrew_project.global.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -13,26 +13,17 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity // Spring Security 지원을 가능하게 함
 @RequiredArgsConstructor
-public class WebSecurity {
+public class WebSecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -64,8 +55,7 @@ public class WebSecurity {
         http.authorizeHttpRequests((authorizeHttpRequests) ->
                 authorizeHttpRequests
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() // resources 접근 허용 설정
-                        .requestMatchers("/").permitAll() // 메인 페이지 요청 허가
-                        .requestMatchers("/user/**", "/auth/**", "/chat/**").permitAll() // '/user/'로 시작하는 요청 모두 접근 허가
+                        .requestMatchers("/user/**","/auth/**","/chat/**").permitAll() // '/api/user/'로 시작하는 요청 모두 접근 허가
                         .anyRequest().authenticated() // 그 외 모든 요청 인증처리
         );
 
@@ -75,19 +65,4 @@ public class WebSecurity {
 
         return http.build();
     }
-
-    @Configuration
-    public class WebConfig implements WebMvcConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOrigins("http://13.125.224.16:8080")
-                    .allowedOrigins("http://localhost:5173")
-                    .allowedMethods("GET", "POST", "PUT", "DELETE")
-                    .allowedHeaders("*")
-                    .allowCredentials(true)
-                    .maxAge(3600);
-        }
-    }
 }
-
