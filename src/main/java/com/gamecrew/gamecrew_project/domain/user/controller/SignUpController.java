@@ -38,4 +38,10 @@ public class SignUpController {
         signupService.checkEmail(requestDto.getEmail());
         return new MessageResponseDto(Message.AVAILABLE_EMAIL, HttpStatus.OK);
     }
+
+    @GetMapping("/hello")
+    public String hello(){
+        return "안녕하세요";
+    }
+
 }
