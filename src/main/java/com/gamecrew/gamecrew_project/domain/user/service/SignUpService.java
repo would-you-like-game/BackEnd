@@ -24,7 +24,11 @@ public class SignUpService {
         String nickname = requestDto.getNickname();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-        //회원 중복 확인
+        Optional<User> checkNickname = userRepository.findByNickname(nickname);
+        if (checkNickname.isPresent()) {
+            throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT, true);
+        }
+
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
             throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT, true);
