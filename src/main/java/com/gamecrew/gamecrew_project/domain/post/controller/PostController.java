@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class PostController {
     private final PostService postService;
 
