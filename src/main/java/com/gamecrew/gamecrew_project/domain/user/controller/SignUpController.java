@@ -18,7 +18,6 @@ import java.util.HashMap;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SignUpController {
     private final SignUpService signupService;
     private final EmailService emailService;
