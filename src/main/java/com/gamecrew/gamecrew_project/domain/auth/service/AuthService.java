@@ -6,7 +6,6 @@ import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.exception.MismatchException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import com.gamecrew.gamecrew_project.global.jwt.JwtUtil;
-import com.gamecrew.gamecrew_project.global.response.constant.Message;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
