@@ -81,7 +81,7 @@ public class WebSecurity {
         @Override
         public void addCorsMappings(CorsRegistry registry) {
             registry.addMapping("/**")
-                    .allowedOrigins("*")
+                    .allowedOrigins("http://13.125.224.16:8080")
                     .allowedMethods("GET", "POST", "PUT", "DELETE")
                     .allowedHeaders("*")
                     .allowCredentials(true)
