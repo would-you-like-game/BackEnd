@@ -24,7 +24,11 @@ public class SignUpService {
         String nickname = requestDto.getNickname();
         String password = passwordEncoder.encode(requestDto.getPassword());
 
-        //회원 중복 확인
+        Optional<User> checkNickname = userRepository.findByNickname(nickname);
+        if (checkNickname.isPresent()) {
+            throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT, true);
+        }
+
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
             throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT, true);
@@ -35,15 +39,15 @@ public class SignUpService {
         userRepository.save(user);
     }
 
-    public void checkNickname(SignupRequestDto requestDto) {
-        Optional<User> checkNickname = userRepository.findByNickname(requestDto.getNickname());
+    public void checkNickname(String nickname) {
+        Optional<User> checkNickname = userRepository.findByNickname(nickname);
         if (checkNickname.isPresent()) {
             throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT, true);
         }
     }
 
-    public void checkEmail(SignupRequestDto requestDto) {
-        Optional<User> checkEmail = userRepository.findByEmail(requestDto.getEmail());
+    public void checkEmail(String email) {
+        Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
             throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT, true);
         }
