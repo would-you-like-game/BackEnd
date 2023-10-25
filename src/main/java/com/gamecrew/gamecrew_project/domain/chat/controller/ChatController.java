@@ -12,7 +12,6 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/chat")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ChatController {
 
     private final ChatService service;
