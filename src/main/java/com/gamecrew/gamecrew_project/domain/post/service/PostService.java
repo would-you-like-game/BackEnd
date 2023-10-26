@@ -47,4 +47,24 @@ public class PostService {
 
         postRepository.delete(post);
     }
+    @Transactional
+    public void updateView(Long postId) {
+        Post post = postRepository.findByPostId(postId);
+        post.update();
+    }
+
+    public PostResponseDto getPost(Long postId, User user) {
+        //해당 메모가 DB에 존재하는지 확인
+        Post post = postRepository.findById(postId).orElseThrow(()->
+                new IllegalArgumentException("선택한 글은 존재하지 않습니다."));
+        PostResponseDto postResponseDto;
+        if(post.getUser().getEmail().equals(user.getEmail())){
+            postResponseDto = new PostResponseDto(post);
+            postResponseDto.checkOwner();
+            return postResponseDto;
+        } else {
+            postResponseDto = new PostResponseDto(post);
+            return postResponseDto;
+        }
+    }
 }

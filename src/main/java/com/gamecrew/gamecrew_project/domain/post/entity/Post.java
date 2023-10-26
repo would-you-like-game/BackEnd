@@ -32,6 +32,9 @@ public class Post extends PostTime {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "view", columnDefinition = "integer default 0", nullable = false)
+    private int view;
+
     public Post(PostRequestDto requestDto, User user){
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
@@ -46,5 +49,7 @@ public class Post extends PostTime {
         this.totalNumber = requestDto.getTotalNumber();
         this.category = requestDto.getCategory();
     }
-
+    public void update() {
+        this.view += 1;
+    }
 }

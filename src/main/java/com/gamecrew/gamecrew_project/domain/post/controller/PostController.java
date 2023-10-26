@@ -39,6 +39,13 @@ public class PostController {
         postService.deletePost(postId, user);
         return new MessageResponseDto(Message.POST_DELETE_SUCCESSFUL, HttpStatus.OK);
     }
+    @GetMapping("/{postId}")
+    public PostResponseDto getPost(@PathVariable("postId") Long postId,
+                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        User user = userDetails.getUser();
 
+        postService.updateView(postId);
+        return postService.getPost(postId,user);
+    }
 
 }
