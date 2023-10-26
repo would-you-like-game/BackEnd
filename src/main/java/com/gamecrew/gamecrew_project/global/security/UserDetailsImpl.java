@@ -7,7 +7,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-public record UserDetailsImpl(User user) implements UserDetails {
+public class UserDetailsImpl implements UserDetails {
+
+    private final User user;
+
+    public UserDetailsImpl(User user) {
+        this.user = user;
+    }
+
+    public User getUser() {
+        return user;
+    }
 
     public User getUser(){
         return user;
