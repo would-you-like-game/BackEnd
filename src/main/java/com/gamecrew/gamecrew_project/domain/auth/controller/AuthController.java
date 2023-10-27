@@ -13,11 +13,20 @@ public class AuthController {
 
     private final EmailService emailService;
 
-    @PostMapping("login/mailConfirm")
+    @PostMapping("/signup/email/code")
     @ResponseBody
     public String mailConfirm(@RequestParam String email) throws Exception {
         String code = emailService.sendSimpleMessage(email);
         log.info("인증코드 : " + code);
         return code;
     }
+
+    @PostMapping("/signup/email/check")
+    @ResponseBody
+    public boolean verifyCode(@RequestParam String code){
+        boolean isVerified = code.equals(emailService.getEPw());
+        return isVerified;
+    }
+
+
 }
