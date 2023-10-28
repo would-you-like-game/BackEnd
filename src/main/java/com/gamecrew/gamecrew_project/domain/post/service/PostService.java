@@ -11,10 +11,18 @@ import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,5 +74,23 @@ public class PostService {
             postResponseDto = new PostResponseDto(post);
             return postResponseDto;
         }
+    }
+
+    public Map<String, Object> getAllPost(int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy,"title");
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Post> postList = postRepository.findAll(pageable);
+
+        List<PostResponseDto> postResponseDtoList = postList.stream()
+                .map(PostResponseDto::new)
+                .collect(Collectors.toList());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("postList", postResponseDtoList);
+        response.put("totalPages", postList.getTotalPages());
+
+        return response;
     }
 }
