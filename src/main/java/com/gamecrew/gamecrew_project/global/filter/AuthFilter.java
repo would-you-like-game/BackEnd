@@ -38,19 +38,17 @@ public class AuthFilter implements Filter {
         } else {
             // 나머지 API 요청은 인증 처리 진행
             // 토큰 확인
-            String tokenValue = jwtUtil.getTokenFromRequest(httpServletRequest);
+            String tokenValue = jwtUtil.getJwtFromHeader(httpServletRequest);
 
             if (StringUtils.hasText(tokenValue)) { // 토큰이 존재하면 검증 시작
-                // JWT 토큰 substring
-                String token = jwtUtil.substringToken(tokenValue);
 
                 // 토큰 검증
-                if (!jwtUtil.validateToken(token)) {
+                if (!jwtUtil.validateToken(tokenValue)) {
                     throw new IllegalArgumentException("Token Error");
                 }
 
                 // 토큰에서 사용자 정보 가져오기
-                Claims info = jwtUtil.getUserInfoFromToken(token);
+                Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
 
                 User user = userRepository.findByNickname(info.getSubject()).orElseThrow(() ->
                         new NullPointerException("Not Found User")
