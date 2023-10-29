@@ -49,7 +49,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String email = ((UserDetailsImpl) authResult.getPrincipal()).getUsername();
 
         String token = jwtUtil.createToken(email);
-        jwtUtil.addJwtToCookie(token, response);
 
         // 클라이언트로 토큰을 응답으로 보내주기
         response.setContentType("application/json");
