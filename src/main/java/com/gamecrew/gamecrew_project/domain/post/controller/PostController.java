@@ -55,18 +55,30 @@ public class PostController {
         return postService.getPost(postId,user);
     }
     //페이지네이션 api
-    @GetMapping("")
-    public ResponseEntity<Map<String, Object>> getAllPost(@RequestParam("page") int page,
-                                                          @RequestParam("size") int size,
-                                                          @RequestParam("sortBy") String sortBy,
-                                                          @RequestParam("isAsc") boolean isAsc) {
-        Map<String, Object> postResponseDtoList = postService.getAllPost(
-                page -1,
-                size,
-                sortBy,
-                isAsc
+    @GetMapping("/category")
+    public ResponseEntity<Map<String, Object>> getCategoryPost(
+            @RequestParam("category") String category,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ) {
+        Map<String, Object> postResponseDtoList = postService.getCategoryPost(
+                category,
+                page - 1,
+                size
         );
         return ResponseEntity.ok(postResponseDtoList);
     }
-
+//    @GetMapping("/getAll")
+//    public ResponseEntity<Map<String, Object>> getAllPost(@RequestParam("page") int page,
+//                                                          @RequestParam("size") int size,
+//                                                          @RequestParam("sortBy") String sortBy,
+//                                                          @RequestParam("isAsc") boolean isAsc) {
+//        Map<String, Object> postResponseDtoList = postService.getAllPost(
+//                page -1,
+//                size,
+//                sortBy,
+//                isAsc
+//        );
+//        return ResponseEntity.ok(postResponseDtoList);
+//    }
 }
