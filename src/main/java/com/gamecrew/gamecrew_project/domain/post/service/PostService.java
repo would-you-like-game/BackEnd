@@ -76,21 +76,42 @@ public class PostService {
         }
     }
 
-    public Map<String, Object> getAllPost(int page, int size, String sortBy, boolean isAsc) {
+    public Map<String, Object> getCategoryPost(String category, int page, int size) {
+        // 페이징 처리
+        boolean isAsc = true;
+        String sortBy = "postId";
         Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(direction, sortBy,"title");
         Pageable pageable = PageRequest.of(page, size, sort);
 
-        Page<Post> postList = postRepository.findAll(pageable);
+        Page<Post> postListCategory = postRepository.findAllByCategory(category, pageable);
 
-        List<PostResponseDto> postResponseDtoList = postList.stream()
-                .map(PostResponseDto::new)
-                .collect(Collectors.toList());
-
+        if(postListCategory.getContent().isEmpty()){
+            throw new RuntimeException("존재하지 않는 카테고리입니다."); // 커스텀 익셉션이라 그냥 런타입 익셉션 씀
+        }
         Map<String, Object> response = new HashMap<>();
-        response.put("postList", postResponseDtoList);
-        response.put("totalPages", postList.getTotalPages());
+        List<PostResponseDto> PostResponseDto = postListCategory.stream().map(PostResponseDto::new).collect(Collectors.toList());
+
+        response.put("totalPages", postListCategory.getTotalPages());
+        response.put("postList", PostResponseDto);
 
         return response;
     }
+//    public Map<String, Object> getAllPost(int page, int size, String sortBy, boolean isAsc) {
+//        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+//        Sort sort = Sort.by(direction, sortBy,"title");
+//        Pageable pageable = PageRequest.of(page, size, sort);
+//
+//        Page<Post> postList = postRepository.findAll(pageable);
+//
+//        List<PostResponseDto> postResponseDtoList = postList.stream()
+//                .map(PostResponseDto::new)
+//                .collect(Collectors.toList());
+//
+//        Map<String, Object> response = new HashMap<>();
+//        response.put("postList", postResponseDtoList);
+//        response.put("totalPages", postList.getTotalPages());
+//
+//        return response;
+//    }
 }
