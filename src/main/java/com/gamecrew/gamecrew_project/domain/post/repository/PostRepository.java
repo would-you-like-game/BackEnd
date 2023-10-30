@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-//    Post findByPostId(Long postId);
+    Post findByPostId(Long postId);
 
     Page<Post> findAllByCategory(String category, Pageable pageable);
 
