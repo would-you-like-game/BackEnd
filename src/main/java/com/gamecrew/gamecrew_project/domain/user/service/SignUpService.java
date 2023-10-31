@@ -93,13 +93,10 @@ public class SignUpService {
 
 
     //이메일 인증 관련 service
-    //인증번호 생성
-    private final String ePw = createKey();
-
     @Value("${spring.mail.username}")
     private String id;
 
-    public MimeMessage createMessage(String to)throws MessagingException, UnsupportedEncodingException {
+    public MimeMessage createMessage(String to, String ePw)throws MessagingException, UnsupportedEncodingException {
         log.info("보내는 대상 : "+ to);
         log.info("인증 번호 : " + ePw);
         MimeMessage  message = javaMailSender.createMimeMessage();
@@ -132,7 +129,8 @@ public class SignUpService {
     }
 
     public String sendSimpleMessage(String to)throws Exception {
-        MimeMessage message = createMessage(to);
+        String ePw = createKey();
+        MimeMessage message = createMessage(to, ePw);
         try{
             javaMailSender.send(message); // 메일 발송
         }catch(MailException es){
