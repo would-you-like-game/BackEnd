@@ -1,4 +1,4 @@
-package com.gamecrew.gamecrew_project.domain.auth.dto.request;
+package com.gamecrew.gamecrew_project.global.request;
 
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import jakarta.validation.constraints.Email;
