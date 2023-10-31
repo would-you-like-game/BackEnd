@@ -1,7 +1,7 @@
 package com.gamecrew.gamecrew_project.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gamecrew.gamecrew_project.domain.auth.dto.request.LoginRequestDto;
+import com.gamecrew.gamecrew_project.global.request.LoginRequestDto;
 import com.gamecrew.gamecrew_project.global.security.UserDetailsImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
