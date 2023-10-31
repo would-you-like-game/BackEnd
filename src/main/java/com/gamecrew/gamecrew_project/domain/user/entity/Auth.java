@@ -17,7 +17,7 @@ public class Auth {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String code;
 
     public Auth(String email, String authCode) {
