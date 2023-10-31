@@ -84,8 +84,7 @@ public class PostService {
         Sort sort = Sort.by(direction, sortBy,"title");
         Pageable pageable = PageRequest.of(page, size, sort);
 
-
-        if(!(category == "all")){
+        if(("all".equals(category))){
             Page<Post> postList = postRepository.findAll(pageable);
 
             List<PostResponseDto> postResponseDtoList = postList.stream()
