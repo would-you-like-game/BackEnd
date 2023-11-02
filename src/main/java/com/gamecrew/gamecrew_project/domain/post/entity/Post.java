@@ -35,6 +35,9 @@ public class Post extends PostTime {
     @Column(name = "view", columnDefinition = "integer default 0", nullable = false)
     private int view;
 
+    @Column(name = "currentNum", nullable = false)
+    private int currentNum = 1;
+
     public Post(PostRequestDto requestDto, User user){
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
@@ -51,5 +54,17 @@ public class Post extends PostTime {
     }
     public void update() {
         this.view += 1;
+    }
+
+    public void recruitCount() {
+        currentNum++;
+    }
+
+    public boolean isFullJoin() {
+        if (totalNumber > currentNum) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
