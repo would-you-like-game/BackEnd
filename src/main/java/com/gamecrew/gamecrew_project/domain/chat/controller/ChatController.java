@@ -1,29 +1,21 @@
 package com.gamecrew.gamecrew_project.domain.chat.controller;
 
-import com.gamecrew.gamecrew_project.domain.chat.dto.ChatRoom;
-import com.gamecrew.gamecrew_project.domain.chat.service.ChatService;
+import com.gamecrew.gamecrew_project.domain.chat.model.message.ChatMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 
-import java.util.List;
-
-@RestController
-@Slf4j
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/chat")
 public class ChatController {
 
-    private final ChatService service;
+    private final SimpMessageSendingOperations template;
 
-    @PostMapping("/{userAId}/{userBId}")
-    public ChatRoom createRoom(@PathVariable String userAId, @PathVariable String userBId){
-        return service.createRoom(userAId, userBId);
-    }
-
-    @GetMapping
-    public List<ChatRoom> findAllRooms(){
-        return service.findAllRoom();
+    @MessageMapping("/send/message")
+    public void sendMessage(@Payload ChatMessage message) {
+        System.out.println("? : " + message);
+        template.convertAndSend("/sub/" + message.roomKey(), message);// 따로 처리 url / 메세징
     }
 }
-
