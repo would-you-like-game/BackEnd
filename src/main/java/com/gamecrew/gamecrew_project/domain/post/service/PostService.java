@@ -1,24 +1,20 @@
 package com.gamecrew.gamecrew_project.domain.post.service;
 
+import com.gamecrew.gamecrew_project.domain.JoinPlayer.repository.JoinPlayerRepository;
 import com.gamecrew.gamecrew_project.domain.post.dto.request.PostRequestDto;
+import com.gamecrew.gamecrew_project.domain.post.dto.response.PageNationResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.dto.response.PostResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.entity.Post;
 import com.gamecrew.gamecrew_project.domain.post.repository.PostRepository;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
-import com.gamecrew.gamecrew_project.global.exception.CustomException;
-import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
-import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final JoinPlayerRepository joinPlayerRepository;
 
 
     public void createPost(PostRequestDto requestDto, User user) {
@@ -87,12 +84,12 @@ public class PostService {
         if(("all".equals(category))){
             Page<Post> postList = postRepository.findAll(pageable);
 
-            List<PostResponseDto> postResponseDtoList = postList.stream()
-                    .map(PostResponseDto::new)
+            List<PageNationResponseDto> pageNationResponseDto = postList.stream()
+                    .map(PageNationResponseDto::new)
                     .collect(Collectors.toList());
 
             Map<String, Object> response = new HashMap<>();
-            response.put("postList", postResponseDtoList);
+            response.put("postList", pageNationResponseDto);
             response.put("totalPages", postList.getTotalPages());
 
             return response;
@@ -100,19 +97,46 @@ public class PostService {
         else {
             Page<Post> postListCategory = postRepository.findAllByCategory(category, pageable);
 
-            if (postListCategory.getContent().isEmpty()) {
-                throw new RuntimeException("존재하지 않는 카테고리입니다."); // 커스텀 익셉션이라 그냥 런타입 익셉션 씀
-            }
+//            if (postListCategory.getContent().isEmpty()) {
+//                throw new RuntimeException("존재하지 않는 카테고리입니다."); // 커스텀 익셉션이라 그냥 런타입 익셉션 씀
+//            }
 
             Map<String, Object> response = new HashMap<>();
-            List<PostResponseDto> PostResponseDto = postListCategory.stream().map(PostResponseDto::new).collect(Collectors.toList());
+            List<PageNationResponseDto> pageNationResponseDto = postListCategory.stream()
+                    .map(PageNationResponseDto::new)
+                    .collect(Collectors.toList());
 
+            response.put("postList", pageNationResponseDto);
             response.put("totalPages", postListCategory.getTotalPages());
-            response.put("postList", PostResponseDto);
 
             return response;
         }
     }
+
+//    public JoinPlayerResponseDto createJoinApply(Long postId, User user) throws MessagingException {
+//        Post post = postRepository.findById(postId).orElseThrow(
+//                () -> new IllegalArgumentException("존재하지 않는 게시글 입니다.")
+//        );
+//
+//        List<JoinPlayer> joinPlayer = joinPlayerRepository.findByPost(post);
+//
+//        long count = joinPlayer.stream().filter(x-> x.getUserEMail().equals(user.getEmail())).count();
+//
+//        if(post.getUser().getEmail().equals(user.getEmail())||count!=0){
+//            throw new IllegalArgumentException("중복 신청은 불가능합니다");
+//        }else if(!post.isFullJoin()){
+//            String nickname = user.getNickname();
+//            String userEmail = user.getEmail();
+//            post.recruitCount();
+//            postRepository.save(post);
+//            JoinPlayer saveJoinCrew = joinPlayerRepository.save(new JoinPlayer(post,user,nickname, userEmail));
+//        }else {
+//            throw new IllegalArgumentException("인원이 가득찼습니다");
+//        }
+//        return new JoinPlayerResponseDto(postId,"신청 완료하였습니다");
+//    }
+
+
 //    public Map<String, Object> getAllPost(int page, int size, String sortBy, boolean isAsc) {
 //        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
 //        Sort sort = Sort.by(direction, sortBy,"title");

@@ -85,29 +85,36 @@ public class PostController {
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
     })
     @GetMapping("/category")
+    //ResponseEntity를 안쓰려면 어떻게 할 수 있나? ResponseEntity의 반환값을 다른 방식으로 하려면?? PostResponseDto를 쓰려면?? 아니면 페이지네이션용 Dto를 따로 만들어야 하나??
     public ResponseEntity<Map<String, Object>> getCategoryPost(
             @RequestParam("category") String category,
             @RequestParam("page") int page,
-            @RequestParam("size") int size
-    ) {
-        Map<String, Object> postResponseDtoList = postService.getCategoryPost(
+            @RequestParam("size") int size) {
+
+        Map<String, Object> pageNationResponseDtoList = postService.getCategoryPost(
                 category,
                 page - 1,
                 size
         );
-        return ResponseEntity.ok(postResponseDtoList);
+        return ResponseEntity.ok(pageNationResponseDtoList);
     }
-//    @GetMapping("/getAll")
-//    public ResponseEntity<Map<String, Object>> getAllPost(@RequestParam("page") int page,
-//                                                          @RequestParam("size") int size,
-//                                                          @RequestParam("sortBy") String sortBy,
-//                                                          @RequestParam("isAsc") boolean isAsc) {
-//        Map<String, Object> postResponseDtoList = postService.getAllPost(
-//                page -1,
-//                size,
-//                sortBy,
-//                isAsc
-//        );
-//        return ResponseEntity.ok(postResponseDtoList);
+
+//    @PostMapping("/{postId}")
+//    public JoinPlayerResponseDto createJoinApply(@PathVariable("postId") Long postId,
+//                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//
+//        User user = userDetails.getUser();
+//        JoinPlayerResponseDto joinPlayerResponseDto;
+//
+//        try {
+//            joinPlayerResponseDto = postService.createJoinApply(postId, user);
+//        } catch (Exception e) {
+//            return joinPlayerResponseDto = new JoinPlayerResponseDto(null, e.getMessage());
+//        }
+//
+//        return joinPlayerResponseDto;
 //    }
+
+
+
 }
