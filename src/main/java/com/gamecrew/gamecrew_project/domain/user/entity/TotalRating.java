@@ -44,7 +44,7 @@ public class TotalRating {
         this.totalGamingSkill = totalGamingSkill;
         this.totalEnjoyable = totalEnjoyable;
         this.totalSociability = totalSociability;
-        this.totalRating = totalRating;
+        this.totalRating = Math.round(totalRating * 2) / 2.0;;
     }
 
     public void setTotalManner(double totalManner) {
