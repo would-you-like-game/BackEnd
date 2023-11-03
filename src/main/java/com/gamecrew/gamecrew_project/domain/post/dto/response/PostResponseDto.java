@@ -33,7 +33,7 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.nickname = post.getUser().getNickname();
 //        this.images = post.getImages();
-        this.id = post.getUser().getId();
+        this.id = post.getUser().getUserId();
 //        this.temperature = post.getUser().getTemperature(); -> 온도 어떻게하지?
         this.view = post.getView();
 //        this.isASC = post.getIsASC();

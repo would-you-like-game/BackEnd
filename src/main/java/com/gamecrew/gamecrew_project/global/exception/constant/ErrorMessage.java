@@ -24,4 +24,5 @@ public class ErrorMessage {
     public static final String INVALID_TOTALNUMBER = "인원은 1~255명 까지 가능합니다.";
 
 
+    public static final String NON_EXISTENT_USER = "존재하지 않는 유저입니다.";
 }
