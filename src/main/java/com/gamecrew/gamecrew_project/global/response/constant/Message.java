@@ -8,5 +8,6 @@ public class Message {
     public static final String POST_SUCCESSFUL = "등록 완료";
     public static final String POST_PUT_SUCCESSFUL = "수정 완료";
     public static final String POST_DELETE_SUCCESSFUL = "삭제 완료";
+    public static final String REGISTRATION_COMPLETED = "점수가 정상적으로 반영되었습니다.";
 
 }
