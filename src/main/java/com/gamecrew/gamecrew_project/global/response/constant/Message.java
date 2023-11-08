@@ -5,6 +5,7 @@ public class Message {
     public static final String AUTH_SUCCESSFUL = "이메일 인증에 성공하였습니다.";
     public static final String AVAILABLE_NICKNAME = "사용 가능한 닉네임입니다.";
     public static final String AVAILABLE_EMAIL = "사용 가능한 이메일입니다.";
+    public static final String CREATE_CHAT_ROOM = "채팅방을 생성하였습니다.";
     public static final String POST_SUCCESSFUL = "등록 완료";
     public static final String POST_PUT_SUCCESSFUL = "수정 완료";
     public static final String POST_DELETE_SUCCESSFUL = "삭제 완료";

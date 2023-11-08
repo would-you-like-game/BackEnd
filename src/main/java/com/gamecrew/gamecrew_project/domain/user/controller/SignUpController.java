@@ -50,5 +50,4 @@ public class SignUpController {
     public MessageResponseDto verifyCode(@RequestBody EmailCodeRequestDto requestDto){
         return signupService.verifyCode(requestDto.getEmail(), requestDto.getCode());
     }
-
 }
