@@ -1,5 +1,6 @@
 package com.gamecrew.gamecrew_project.domain.user.entity;
 
+import com.gamecrew.gamecrew_project.global.entity.Auditing;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class User extends Auditing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
