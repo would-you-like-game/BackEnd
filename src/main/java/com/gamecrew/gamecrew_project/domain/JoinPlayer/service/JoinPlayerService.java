@@ -59,8 +59,7 @@ public class JoinPlayerService {
         }
     }
 
-
-    public List<JoinPlayerResponseDto> getJoinPlayerList(String userEmail, Boolean isApproval) {
+    public List<JoinPlayerResponseDto> getJoinPlayerList(String userEmail, Long postId) {
 
         List<Post> postList = postRepository.findAllByUserEmail(userEmail);
 
@@ -70,13 +69,9 @@ public class JoinPlayerService {
 
         List<JoinPlayer> joinPlayers;
 
-        if (isApproval.equals(Boolean.FALSE)) {
-            joinPlayers = joinPlayerRepository.findJoinPlayersByPostIn(postList).stream()
-                    .filter(joinPlayer -> !joinPlayer.getIsAccepted()).collect(Collectors.toList());
-        }else{
-            joinPlayers = joinPlayerRepository.findJoinPlayersByPostIn(postList).stream()
-                    .filter(joinPlayer -> joinPlayer.getIsAccepted()).collect(Collectors.toList());
-        }
+        joinPlayers = joinPlayerRepository.findJoinPlayersByPostId(postId).stream().collect(Collectors.toList());
+//                     .filter(joinPlayer -> !joinPlayer.getIsAccepted()).collect(Collectors.toList()); 이렇게하면 IsAccepted가 false인 애들만 보여줌
+
         return joinPlayers.stream().map(x-> new JoinPlayerResponseDto(x,false)).collect(Collectors.toList());
     }
 }
