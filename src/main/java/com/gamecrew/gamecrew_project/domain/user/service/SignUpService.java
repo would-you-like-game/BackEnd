@@ -53,7 +53,7 @@ public class SignUpService {
         }
 
         //사용자 등록
-        User user = new User(email, nickname, password);
+        User user = new User(email, nickname, password, null);
         userRepository.save(user);
     }
 

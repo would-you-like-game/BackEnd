@@ -1,5 +1,6 @@
 package com.gamecrew.gamecrew_project.domain.user.entity;
 
+import com.gamecrew.gamecrew_project.global.entity.Auditing;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class User {
+public class User extends Auditing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private Long id;
+    private Long userId;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -24,9 +25,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    public User(String email, String nickname, String password) {
+    @Column
+    private String userImg;
+
+    public User(String email, String nickname, String password, String userImg) {
         this.email = email;
         this.nickname = nickname;
         this.password = password;
+        this.userImg = userImg;
     }
 }

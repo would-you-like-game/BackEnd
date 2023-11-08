@@ -29,7 +29,7 @@ public class ChatProfileSearchService {
 
         return userList.stream()
                 .map(user -> new UserResponse(
-                        user.getId(),
+                        user.getUserId(),
                         user.getNickname()
                 ))
                 .collect(Collectors.toList());

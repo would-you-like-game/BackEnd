@@ -17,11 +17,11 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private String nickname;
 //    private List<String> images;
-    private Long id;
+    private Long UserId;
 //    private Temperature temperature; -> 온도 어떻게하지?
     private int view;
 
-    private boolean isOwner =false;
+    private boolean isPostUser =false;
 //    private Boolean isASC;
 
     public PostResponseDto(Post post){
@@ -33,13 +33,13 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.nickname = post.getUser().getNickname();
 //        this.images = post.getImages();
-        this.id = post.getUser().getId();
+        this.UserId = post.getUser().getUserId();
 //        this.temperature = post.getUser().getTemperature(); -> 온도 어떻게하지?
         this.view = post.getView();
 //        this.isASC = post.getIsASC();
     }
     public void checkOwner(){
-        isOwner = true;
+        isPostUser = true;
     }
 
 }
