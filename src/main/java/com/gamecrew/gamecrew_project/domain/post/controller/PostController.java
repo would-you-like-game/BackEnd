@@ -19,6 +19,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -70,11 +71,14 @@ public class PostController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = PostResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = PostResponseDto.class)))
     })
-    @GetMapping("/get/{postId}")
+    @GetMapping("/{postId}")
     public PostResponseDto getPost(@PathVariable("postId") Long postId,
-                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                   @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(Objects.isNull(userDetails)){
+            postService.updateView(postId);
+            return postService.getPost(postId,null);
+        }
         User user = userDetails.getUser();
-
         postService.updateView(postId);
         return postService.getPost(postId,user);
     }
