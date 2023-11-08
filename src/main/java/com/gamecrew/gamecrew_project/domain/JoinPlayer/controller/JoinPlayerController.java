@@ -70,12 +70,12 @@ public class JoinPlayerController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
     })
-    @GetMapping("/{isApproval}")
+    @GetMapping("/{postId}")
     public ResponseEntity<List<JoinPlayerResponseDto>> getJoinPlayer(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                                                   @PathVariable Boolean isApproval){
+                                                                     @PathVariable Long postId){
         String userEmail = userDetails.getUser().getEmail();
 
-        return ResponseEntity.ok(joinPlayerService.getJoinPlayerList(userEmail, isApproval));
+        return ResponseEntity.ok(joinPlayerService.getJoinPlayerList(userEmail, postId));
     }
 
 }

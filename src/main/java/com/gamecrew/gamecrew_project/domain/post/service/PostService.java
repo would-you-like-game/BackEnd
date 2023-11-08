@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,14 +64,15 @@ public class PostService {
         Post post = postRepository.findById(postId).orElseThrow(()->
                 new IllegalArgumentException("선택한 글은 존재하지 않습니다."));
         PostResponseDto postResponseDto;
-        if(post.getUser().getEmail().equals(user.getEmail())){
+        if(Objects.isNull(user)){
+            postResponseDto = new PostResponseDto(post);
+        } else if (post.getUser().getEmail().equals(user.getEmail())) {
             postResponseDto = new PostResponseDto(post);
             postResponseDto.checkOwner();
-            return postResponseDto;
         } else {
             postResponseDto = new PostResponseDto(post);
-            return postResponseDto;
         }
+        return postResponseDto;
     }
 
     public Map<String, Object> getCategoryPost(String category, int page, int size) {
