@@ -47,7 +47,7 @@ public class JoinPlayerService {
     }
     @Transactional
     public void acceptJoinApply(String userEmail, Long postId) {
-        JoinPlayer joinPlayer = joinPlayerRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 신청이 존재하지 않습니다 +++++"));
+        JoinPlayer joinPlayer = joinPlayerRepository.findById(postId).orElseThrow(()->new IllegalArgumentException("해당 신청이 존재하지 않습니다"));
 
         String crewOwnerEmail = joinPlayer.getPost().getUser().getEmail();
 
