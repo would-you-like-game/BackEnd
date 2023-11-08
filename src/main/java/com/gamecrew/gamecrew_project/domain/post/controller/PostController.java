@@ -70,7 +70,7 @@ public class PostController {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = PostResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = PostResponseDto.class)))
     })
-    @GetMapping("/{postId}")
+    @GetMapping("/get/{postId}")
     public PostResponseDto getPost(@PathVariable("postId") Long postId,
                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
