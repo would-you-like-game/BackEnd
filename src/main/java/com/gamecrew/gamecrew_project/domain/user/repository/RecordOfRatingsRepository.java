@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecordOfRatingsRepository extends JpaRepository<RecordOfRatings, Long> {
 
+    Long countByUser(Long userId);
 }
