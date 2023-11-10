@@ -1,6 +1,5 @@
 package com.gamecrew.gamecrew_project.domain.user.service;
 
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.gamecrew.gamecrew_project.domain.user.dto.request.CheckNicknameRequestDto;
 import com.gamecrew.gamecrew_project.domain.user.dto.request.CheckPasswordRequestDto;
 import com.gamecrew.gamecrew_project.domain.user.dto.response.UserProfileResponseDto;
