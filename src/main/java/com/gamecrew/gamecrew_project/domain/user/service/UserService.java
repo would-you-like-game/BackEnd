@@ -23,7 +23,7 @@ public class UserService {
         String nickname = user.getNickname();
         String email = user.getEmail();
 
-        Optional<TotalRating> checkUserTotalRating = totalRatingRepository.findByEvaluatedUserId(user.getUserId());
+        Optional<TotalRating> checkUserTotalRating = totalRatingRepository.findByUserId(user.getUserId());
         if (checkUserTotalRating.isEmpty()){
             double totalManner = 4.0;
             double totalParticipation =4.0;
@@ -49,7 +49,7 @@ public class UserService {
         UserTotalRatingResponseDto userTotalRatingResponseDto = new UserTotalRatingResponseDto(
                 totalManner, totalParticipation,totalGamingSkill,totalEnjoyable,totalSociability,totalRating);
 
-        Long numberOfEvaluations = recordOfRatingsRepository.countByUser(user.getUserId());
+        Long numberOfEvaluations = recordOfRatingsRepository.countByUserId(user.getUserId());
 
         UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(userImg, nickname, email, userTotalRatingResponseDto, numberOfEvaluations);
         return userProfileResponseDto;

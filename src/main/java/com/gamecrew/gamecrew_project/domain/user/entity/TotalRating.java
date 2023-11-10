@@ -16,7 +16,7 @@ public class TotalRating {
     private Long id;
 
     @Column(nullable = false)
-    private Long evaluatedUserId; // 평가 받은 사람
+    private Long userId; // 평가 받은 사람
 
     @Column(nullable = false)
     private double totalManner;
@@ -38,7 +38,7 @@ public class TotalRating {
 
     public TotalRating(Long evaluated_user, double totalManner, double totalParticipation, double totalGamingSkill,
                        double totalEnjoyable, double totalSociability, double totalRating) {
-        this.evaluatedUserId = evaluated_user;
+        this.userId = evaluated_user;
         this.totalManner = totalManner;
         this.totalParticipation = totalParticipation;
         this.totalGamingSkill = totalGamingSkill;

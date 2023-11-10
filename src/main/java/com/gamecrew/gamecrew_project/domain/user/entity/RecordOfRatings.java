@@ -16,7 +16,7 @@ public class RecordOfRatings{
     private Long id;
 
     @Column(nullable = false)
-    private Long user; // 평가 받은 사람
+    private Long userId; // 평가 받은 사람
 
     @Column(nullable = false)
     private Long evaluator; //평가한 사람
@@ -39,8 +39,8 @@ public class RecordOfRatings{
     @Column(nullable = false)
     private double totalRating;
 
-    public RecordOfRatings(Long user, Long evaluator, int manner, int participation, int gamingSkill, int enjoyable, int sociability, double totalRating) {
-        this.user = user;
+    public RecordOfRatings(Long userId, Long evaluator, int manner, int participation, int gamingSkill, int enjoyable, int sociability, double totalRating) {
+        this.userId = userId;
         this.evaluator = evaluator;
         this.manner = manner;
         this.participation = participation;
