@@ -14,6 +14,7 @@ public class ErrorMessage {
     public static final String PASSWORD_NOT_BLANK = "비밀번호를 입력해주세요.";
     public static final String INVALID_PASSWORD_LENGTH = "비밀번호는 최소 8자 이상, 최대 20자 미만으로 입력해야합니다.";
     public static final String INVALID_PASSWORD_FORMAT = "잘못된 비밀번호 형식입니다. 소문자, 대문자, 특수기호를 각각 하나 이상 입력해주세요.";
+    public static final String PASSWORD_MISMATCH = "비밀번호가 틀립니다.";
     public static final String CODE_MISMATCH = "이메일이나 인증 코드가 일치하지 않습니다.";
     public static final String INVALID_INPUT = "입력값을 확인해주세요.";
     public static final String TITLE_NOT_BLANK = "제목을 입력해주세요.";
@@ -28,4 +29,5 @@ public class ErrorMessage {
     public static final String NOT_FOUND_USERS = "상대방 사용자를 찾을 수 없습니다.";
     public static final String DUPLICATE_CHATROOM_EXISTS = "이미 생성된 채팅방입니다.";
     public static final String CANNOT_CHOOSE_YOURSELF = "자신을 대상으로 하는 선택은 허용되지 않습니다.";
+
 }
