@@ -37,7 +37,7 @@ public class RatingController {
     }
 
     //유저의 평점을 가져오는 API
-    @GetMapping("/getRating/{evaluated_user}")
+    @GetMapping("/rating/{evaluated_user}")
     public UserTotalRatingResponseDto getUserRating(@PathVariable Long evaluated_user){
         return ratingService.getUserRating(evaluated_user);
     }

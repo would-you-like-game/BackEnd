@@ -25,4 +25,5 @@ public class ErrorMessage {
 
 
     public static final String NON_EXISTENT_USER = "존재하지 않는 유저입니다.";
+    public static final String DUPLICATE_CHATROOM_EXISTS = "이미 생성된 채팅방입니다.";
 }

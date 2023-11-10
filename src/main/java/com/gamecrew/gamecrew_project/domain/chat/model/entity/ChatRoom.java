@@ -22,6 +22,7 @@ public class ChatRoom extends Auditing {
 
     @Column
     private Long sender;
+
     @Column
     private Long receiver;
 }

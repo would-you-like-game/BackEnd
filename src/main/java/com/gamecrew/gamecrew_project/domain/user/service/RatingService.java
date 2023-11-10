@@ -30,7 +30,7 @@ public class RatingService {
         int sociability = userRatingRequestDto.getSociability();
         Long evaluatorId =evaluator.getUserId();
 
-        Optional<TotalRating> checkRating = totalRatingRepository.findByEvaluatedUserId(evaluated_user);
+        Optional<TotalRating> checkRating = totalRatingRepository.findByUserId(evaluated_user);
         if (checkRating.isEmpty()){
             double totalRating = (double)(manner + participation + gamingSkill + enjoyable + sociability) / 5 ;
 
@@ -64,7 +64,8 @@ public class RatingService {
         }
     }
     public UserTotalRatingResponseDto getUserRating(Long evaluated_user) {
-        Optional<TotalRating> checkUser= totalRatingRepository.findByEvaluatedUserId(evaluated_user);
+        Optional<TotalRating> checkUser= totalRatingRepository.findByUserId(evaluated_user);
+
         if (checkUser.isEmpty()){
             throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false);
         }
