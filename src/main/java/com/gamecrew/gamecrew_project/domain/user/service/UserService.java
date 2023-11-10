@@ -1,13 +1,20 @@
 package com.gamecrew.gamecrew_project.domain.user.service;
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.gamecrew.gamecrew_project.domain.user.dto.request.CheckNicknameRequestDto;
+import com.gamecrew.gamecrew_project.domain.user.dto.request.CheckPasswordRequestDto;
 import com.gamecrew.gamecrew_project.domain.user.dto.response.UserProfileResponseDto;
 import com.gamecrew.gamecrew_project.domain.user.dto.response.UserTotalRatingResponseDto;
-import com.gamecrew.gamecrew_project.domain.user.entity.RecordOfRatings;
 import com.gamecrew.gamecrew_project.domain.user.entity.TotalRating;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.domain.user.repository.RecordOfRatingsRepository;
 import com.gamecrew.gamecrew_project.domain.user.repository.TotalRatingRepository;
+import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
+import com.gamecrew.gamecrew_project.global.exception.CustomException;
+import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,6 +24,8 @@ import java.util.Optional;
 public class UserService {
     private final TotalRatingRepository totalRatingRepository;
     private final RecordOfRatingsRepository recordOfRatingsRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserProfileResponseDto getUserProfile(User user) {
         String userImg = user.getUserImg();
@@ -53,5 +62,26 @@ public class UserService {
 
         UserProfileResponseDto userProfileResponseDto = new UserProfileResponseDto(userImg, nickname, email, userTotalRatingResponseDto, numberOfEvaluations);
         return userProfileResponseDto;
+    }
+
+    public void updateUserNickname(Long userId, CheckNicknameRequestDto requestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));
+
+        user.updateNickname(requestDto.getNickname());
+    }
+
+    public void checkUserPassword(User user, CheckPasswordRequestDto requestDto) {
+        if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())){
+            throw new CustomException(ErrorMessage.PASSWORD_MISMATCH, HttpStatus.BAD_REQUEST, false);
+        }
+    }
+
+    public void updateUserPassword(Long userId, CheckPasswordRequestDto requestDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));
+
+        String newPassword = passwordEncoder.encode(requestDto.getPassword());
+        user.updatePassword(newPassword);
     }
 }

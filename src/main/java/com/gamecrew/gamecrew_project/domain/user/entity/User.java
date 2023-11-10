@@ -34,4 +34,12 @@ public class User extends Auditing {
         this.password = password;
         this.userImg = userImg;
     }
+
+    public void updateNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }
