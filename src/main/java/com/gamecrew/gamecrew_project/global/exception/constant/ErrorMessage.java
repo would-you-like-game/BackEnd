@@ -25,5 +25,7 @@ public class ErrorMessage {
 
 
     public static final String NON_EXISTENT_USER = "존재하지 않는 유저입니다.";
+    public static final String NOT_FOUND_USERS = "상대방 사용자를 찾을 수 없습니다.";
     public static final String DUPLICATE_CHATROOM_EXISTS = "이미 생성된 채팅방입니다.";
+    public static final String CANNOT_CHOOSE_YOURSELF = "자신을 대상으로 하는 선택은 허용되지 않습니다.";
 }
