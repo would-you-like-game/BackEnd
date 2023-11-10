@@ -31,9 +31,18 @@ public class ChatRoomService {
     public MessageResponseDto createChatRoom(Long senderId, Long receiverId) {
         String roomId = generateRoomId(senderId, receiverId);
 
+        Optional<User> existingUser = userRepository.findById(receiverId);
+        if (existingUser.isEmpty()){
+            throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false);
+        }
+
         Optional<ChatRoom> existingRoom = chatRoomRepository.findByRoomKey(roomId);
         if (existingRoom.isPresent()) {
             throw new CustomException(ErrorMessage.DUPLICATE_CHATROOM_EXISTS, HttpStatus.CONFLICT, false);
+        }
+
+        if (senderId.equals(receiverId)){
+            throw new CustomException(ErrorMessage.CANNOT_CHOOSE_YOURSELF, HttpStatus.UNPROCESSABLE_ENTITY, false);
         }
 
         ChatRoom newRoom = ChatRoom.builder()
@@ -67,7 +76,7 @@ public class ChatRoomService {
                     Optional<User> otherUserOpt = userRepository.findByUserId(otherUserId);
 
                     if (!otherUserOpt.isPresent()) {
-                        throw new IllegalArgumentException("상대방 사용자를 찾을 수 없습니다.");
+                        throw new CustomException(ErrorMessage.NOT_FOUND_USERS, HttpStatus.NOT_FOUND, false);
                     }
 
                     User otherUser = otherUserOpt.get();
