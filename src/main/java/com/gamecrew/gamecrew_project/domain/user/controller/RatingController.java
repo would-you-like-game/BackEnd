@@ -28,7 +28,7 @@ public class RatingController {
     public MessageResponseDto registrationOfRatings(@RequestBody UserRatingRequestDto userRatingRequestDto,
                                                     @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                     @PathVariable Long evaluated_user){
-        if (userRepository.findById(evaluated_user).isEmpty()) throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false);
+        if (userRepository.findById(evaluated_user).isEmpty()) throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST);
 
         User evaluator = userDetails.getUser();
         ratingService.registrationOfRatings(userRatingRequestDto, evaluator, evaluated_user);

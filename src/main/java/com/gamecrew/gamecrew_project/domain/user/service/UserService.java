@@ -67,21 +67,21 @@ public class UserService {
     @Transactional
     public void updateUserNickname(Long userId, CheckNicknameRequestDto requestDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));
+                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST));
 
         user.updateNickname(requestDto.getNickname());
     }
 
     public void checkUserPassword(User user, CheckPasswordRequestDto requestDto) {
         if(!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())){
-            throw new CustomException(ErrorMessage.PASSWORD_MISMATCH, HttpStatus.BAD_REQUEST, false);
+            throw new CustomException(ErrorMessage.PASSWORD_MISMATCH, HttpStatus.BAD_REQUEST);
         }
     }
 
     @Transactional
     public void updateUserPassword(Long userId, CheckPasswordRequestDto requestDto) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));
+                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST));
 
         String newPassword = passwordEncoder.encode(requestDto.getPassword());
         user.updatePassword(newPassword);
