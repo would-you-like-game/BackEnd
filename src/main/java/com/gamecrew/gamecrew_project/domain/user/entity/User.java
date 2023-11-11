@@ -42,4 +42,8 @@ public class User extends Auditing {
     public void updatePassword(String password) {
         this.password = password;
     }
+
+    public void updateUserImg(String imageUrl) {
+        this.userImg = imageUrl;
+    }
 }
