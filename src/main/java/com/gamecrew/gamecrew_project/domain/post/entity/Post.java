@@ -2,6 +2,7 @@ package com.gamecrew.gamecrew_project.domain.post.entity;
 
 import com.gamecrew.gamecrew_project.domain.post.dto.request.PostRequestDto;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
+import com.gamecrew.gamecrew_project.global.entity.Auditing;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @Table(name = "post")
 @NoArgsConstructor
-public class Post extends PostTime {
+public class Post extends Auditing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
