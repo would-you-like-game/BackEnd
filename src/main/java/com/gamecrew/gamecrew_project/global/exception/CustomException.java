@@ -3,12 +3,14 @@ package com.gamecrew.gamecrew_project.global.exception;
 import org.springframework.http.HttpStatus;
 
 public class CustomException extends RuntimeException {
-    private final HttpStatus status;
-    private final boolean result;
+    private HttpStatus httpStatus;
 
-    public CustomException(String message, HttpStatus status, boolean isDuplicate) {
+    public CustomException(String message, HttpStatus httpStatus) {
         super(message);
-        this.status = status;
-        this.result = isDuplicate;
+        this.httpStatus = httpStatus;
+    }
+
+    public HttpStatus getHttpStatus() {
+        return httpStatus;
     }
 }

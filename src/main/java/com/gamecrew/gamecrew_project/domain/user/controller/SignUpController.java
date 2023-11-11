@@ -48,6 +48,7 @@ public class SignUpController {
     @PostMapping("/signup/email/check")
     @ResponseBody
     public MessageResponseDto verifyCode(@RequestBody EmailCodeRequestDto requestDto){
-        return signupService.verifyCode(requestDto.getEmail(), requestDto.getCode());
+        signupService.verifyCode(requestDto.getEmail(), requestDto.getCode());
+        return new MessageResponseDto(Message.AUTH_SUCCESSFUL, HttpStatus.OK);
     }
 }

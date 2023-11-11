@@ -7,7 +7,6 @@ import com.gamecrew.gamecrew_project.domain.user.entity.TotalRating;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.domain.user.repository.TotalRatingRepository;
 import com.gamecrew.gamecrew_project.domain.user.repository.RecordOfRatingsRepository;
-import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.exception.CustomException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class RatingService {
-    private final UserRepository userRepository;
     private final TotalRatingRepository totalRatingRepository;
     private final RecordOfRatingsRepository recordOfRatingsRepository;
     public void registrationOfRatings(UserRatingRequestDto userRatingRequestDto, User evaluator, Long evaluated_user) {
@@ -67,7 +65,7 @@ public class RatingService {
         Optional<TotalRating> checkUser= totalRatingRepository.findByUserId(evaluated_user);
 
         if (checkUser.isEmpty()){
-            throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false);
+            throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST);
         }
         TotalRating existingTotalRating = checkUser.get();
         double totalManner = existingTotalRating.getTotalManner();
