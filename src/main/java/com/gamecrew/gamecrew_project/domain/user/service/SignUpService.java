@@ -44,12 +44,13 @@ public class SignUpService {
 
         Optional<User> checkNickname = userRepository.findByNickname(nickname);
         if (checkNickname.isPresent()) {
-            throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT, true);
+            throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT);
         }
 
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
-            throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT, true);
+
+            throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT);
         }
 
         //사용자 등록
@@ -60,34 +61,33 @@ public class SignUpService {
     public void checkNickname(String nickname) {
         Optional<User> checkNickname = userRepository.findByNickname(nickname);
         if (checkNickname.isPresent()) {
-            throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT, true);
+            throw new CustomException(ErrorMessage.DUPLICATE_NICKNAME_EXISTS, HttpStatus.CONFLICT);
         }
     }
 
     public String checkAndSendEmail(String email) {
         Optional<User> checkEmail = userRepository.findByEmail(email);
         if (checkEmail.isPresent()) {
-            throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT, true);
+            throw new CustomException(ErrorMessage.DUPLICATE_EMAIL_EXISTS, HttpStatus.CONFLICT);
         }
 
         // 중복되는 이메일이 없으면 인증 코드 발송
         try{
             return sendSimpleMessage(email);
         }catch(Exception e){
-            throw new CustomException(ErrorMessage.FAILED_TO_SEND_EMAIL, HttpStatus.INTERNAL_SERVER_ERROR, true);
+            throw new CustomException(ErrorMessage.FAILED_TO_SEND_EMAIL, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    public MessageResponseDto verifyCode(String email, String code) {
+    public void verifyCode(String email, String code) {
         if (email == null || email.isEmpty() || code == null || code.isEmpty()) {
-            return new MessageResponseDto(ErrorMessage.INVALID_INPUT, HttpStatus.BAD_REQUEST);
+            throw new  CustomException(ErrorMessage.INVALID_INPUT, HttpStatus.BAD_REQUEST);
         }
 
         Optional<Auth> checkEmailAndCode = authRepository.findByEmailAndCode(email,code);
         if (!(checkEmailAndCode.isPresent())) {
-            return new MessageResponseDto(ErrorMessage.CODE_MISMATCH, HttpStatus.BAD_REQUEST);
+            throw  new CustomException(ErrorMessage.CODE_MISMATCH, HttpStatus.BAD_REQUEST);
         }
-        return new MessageResponseDto(Message.AUTH_SUCCESSFUL, HttpStatus.OK);
     }
 
 
@@ -135,7 +135,7 @@ public class SignUpService {
             javaMailSender.send(message); // 메일 발송
         }catch(MailException es){
             es.printStackTrace();
-            throw new IllegalArgumentException(ErrorMessage.FAILED_TO_SEND_EMAIL);
+            throw new CustomException(ErrorMessage.FAILED_TO_SEND_EMAIL, HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return ePw; // 메일로 보냈던 인증 코드를 서버로 리턴
     }

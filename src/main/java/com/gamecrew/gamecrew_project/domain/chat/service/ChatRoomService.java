@@ -33,16 +33,16 @@ public class ChatRoomService {
 
         Optional<User> existingUser = userRepository.findById(receiverId);
         if (existingUser.isEmpty()){
-            throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false);
+            throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST);
         }
 
         Optional<ChatRoom> existingRoom = chatRoomRepository.findByRoomKey(roomId);
         if (existingRoom.isPresent()) {
-            throw new CustomException(ErrorMessage.DUPLICATE_CHATROOM_EXISTS, HttpStatus.CONFLICT, false);
+            throw new CustomException(ErrorMessage.DUPLICATE_CHATROOM_EXISTS, HttpStatus.CONFLICT);
         }
 
         if (senderId.equals(receiverId)){
-            throw new CustomException(ErrorMessage.CANNOT_CHOOSE_YOURSELF, HttpStatus.UNPROCESSABLE_ENTITY, false);
+            throw new CustomException(ErrorMessage.CANNOT_CHOOSE_YOURSELF, HttpStatus.UNPROCESSABLE_ENTITY);
         }
 
         ChatRoom newRoom = ChatRoom.builder()
@@ -76,7 +76,7 @@ public class ChatRoomService {
                     Optional<User> otherUserOpt = userRepository.findByUserId(otherUserId);
 
                     if (!otherUserOpt.isPresent()) {
-                        throw new CustomException(ErrorMessage.NOT_FOUND_USERS, HttpStatus.NOT_FOUND, false);
+                        throw new CustomException(ErrorMessage.NOT_FOUND_USERS, HttpStatus.NOT_FOUND);
                     }
 
                     User otherUser = otherUserOpt.get();

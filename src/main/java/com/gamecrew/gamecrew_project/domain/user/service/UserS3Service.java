@@ -30,7 +30,7 @@ public class UserS3Service {
     @Transactional
     public void updateUserImage(Long userId, MultipartFile userImg) throws IOException {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));
+                .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST));
 
         long size = userImg.getSize();
 
