@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -63,6 +64,7 @@ public class UserService {
         return userProfileResponseDto;
     }
 
+    @Transactional
     public void updateUserNickname(Long userId, CheckNicknameRequestDto requestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));
@@ -76,6 +78,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public void updateUserPassword(Long userId, CheckPasswordRequestDto requestDto) {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST, false));

@@ -1,15 +1,10 @@
 package com.gamecrew.gamecrew_project.domain.chat.controller;
 
 import com.gamecrew.gamecrew_project.domain.chat.model.response.ChatRoomsResponseDto;
-import com.gamecrew.gamecrew_project.global.response.CustomResponse;
 import com.gamecrew.gamecrew_project.domain.chat.service.ChatRoomService;
 import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
-import com.gamecrew.gamecrew_project.global.response.constant.Message;
 import com.gamecrew.gamecrew_project.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +25,7 @@ public class ChatRoomController {
     @GetMapping("")
     public ChatRoomsResponseDto getChatRooms(@AuthenticationPrincipal UserDetailsImpl userDetails,
                                              @RequestParam int page,
-                                             @RequestParam(defaultValue = "10") int size){
+                                             @RequestParam int size){
         Long userId = userDetails.getUser().getUserId();
         return chatRoomService.getChatRooms(userId, page-1, size);
     }
