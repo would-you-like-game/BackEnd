@@ -5,6 +5,8 @@ import com.gamecrew.gamecrew_project.domain.post.dto.request.PostRequestDto;
 import com.gamecrew.gamecrew_project.domain.post.dto.response.PageNationResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.dto.response.PostResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.entity.Post;
+import com.gamecrew.gamecrew_project.domain.post.entity.PostImg;
+import com.gamecrew.gamecrew_project.domain.post.repository.PostImgRepository;
 import com.gamecrew.gamecrew_project.domain.post.repository.PostRepository;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import jakarta.transaction.Transactional;
@@ -14,7 +16,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +29,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final JoinPlayerRepository joinPlayerRepository;
+    private final PostS3Service postS3Service;
+    private final PostImgRepository postImgRepository;
 
 
-    public void createPost(PostRequestDto requestDto, User user) {
-        // RequestDto -> Entity
+    public void createPost(PostRequestDto requestDto, User user, List<MultipartFile> photos) throws IOException {
+        List<PostImg> postImgList = null;
+        if (photos != null && !photos.isEmpty()) {
+            postImgList = postS3Service.uploadPhotosToS3AndCreatePostImages(photos);
+        }
+
         Post post = new Post(requestDto, user);
-        //DB저장
-        Post savePost = postRepository.save(post);
+        postRepository.save(post);
+
+        if (postImgList != null) {
+            associatePostImagesWithPost(post, postImgList);
+        }
     }
+
+    //PostImg 객체와 Post를 연결하고 DB에 저장
+    private void associatePostImagesWithPost(Post post, List<PostImg> postImgList) {
+        for (PostImg postImg : postImgList) {
+            postImg.setPost(post);
+            postImgRepository.save(postImg);
+        }
+    }
+
     @Transactional
     public void updatePost(Long postId, PostRequestDto requestDto, User user) {
         //해당 메모가 DB에 존재하는지 확인
