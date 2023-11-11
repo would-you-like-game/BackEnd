@@ -17,7 +17,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -33,10 +36,12 @@ public class PostController {
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = MessageResponseDto.class)))
     })
     @PostMapping("")
-    public MessageResponseDto createPost(@RequestBody PostRequestDto requestDto,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public MessageResponseDto createPost(@RequestPart("post") PostRequestDto requestDto,
+                                         @RequestPart("photos") List<MultipartFile> photos,
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails
+    )throws IOException {
         User user = userDetails.getUser();
-        postService.createPost(requestDto, user);
+        postService.createPost(requestDto, user, photos);
         return new MessageResponseDto(Message.POST_SUCCESSFUL, HttpStatus.OK);
     }
 
