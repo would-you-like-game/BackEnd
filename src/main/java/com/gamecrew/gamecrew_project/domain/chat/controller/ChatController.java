@@ -15,7 +15,6 @@ public class ChatController {
 
     @MessageMapping("/send/message")
     public void sendMessage(@Payload ChatMessage message) {
-        System.out.println("? : " + message);
-        template.convertAndSend("/sub/" + message.roomKey(), message);// 따로 처리 url / 메세징
+        template.convertAndSend("/sub/" + message.roomKey(), message);
     }
 }
