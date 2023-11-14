@@ -33,11 +33,10 @@ public class Post extends Auditing {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "view", columnDefinition = "integer default 0", nullable = false)
-    private int view;
-
     @Column(name = "currentNum", nullable = false)
-    private int currentNum = 1;
+    private Long currentNumber = 1L;
+
+    private Long postViewCount = 0L;
 
     public Post(PostRequestDto requestDto, User user){
         this.title = requestDto.getTitle();
@@ -53,19 +52,20 @@ public class Post extends Auditing {
         this.totalNumber = requestDto.getTotalNumber();
         this.category = requestDto.getCategory();
     }
-    public void update() {
-        this.view += 1;
-    }
 
     public void recruitCount() {
-        currentNum++;
+        currentNumber++;
     }
 
     public boolean isFullJoin() {
-        if (totalNumber > currentNum) {
+        if (totalNumber > currentNumber) {
             return false;
         } else {
             return true;
         }
+    }
+
+    public void increaseViewCount() {
+        this.postViewCount += 1;
     }
 }

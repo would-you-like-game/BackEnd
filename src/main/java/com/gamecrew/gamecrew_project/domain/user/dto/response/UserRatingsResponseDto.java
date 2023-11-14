@@ -1,5 +1,6 @@
 package com.gamecrew.gamecrew_project.domain.user.dto.response;
 
+import com.gamecrew.gamecrew_project.global.response.CustomPageable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import java.util.List;
 @Setter
 public class UserRatingsResponseDto {
     private String msg;
-    private RatingPageable pageable;
+    private CustomPageable pageable;
     private List<UserRatingResultDto> result;
 
     public UserRatingsResponseDto(
@@ -20,7 +21,7 @@ public class UserRatingsResponseDto {
             List<UserRatingResultDto> userRatingResultDto
     ) {
         this.msg = msg;
-        this.pageable = new RatingPageable(totalPages, totalElements, size);
+        this.pageable = new CustomPageable(totalPages, totalElements, size);
         this.result = userRatingResultDto;
     }
 
@@ -46,19 +47,6 @@ public class UserRatingsResponseDto {
             this.enjoyable = enjoyable;
             this.sociability = sociability;
 
-        }
-    }
-
-    @Getter
-    private class RatingPageable {
-        private int totalPages;
-        private long totalElements;
-        private int size;
-
-        public RatingPageable(int totalPages, long totalElements, int size) {
-            this.totalPages = totalPages;
-            this.totalElements = totalElements;
-            this.size = size;
         }
     }
 }
