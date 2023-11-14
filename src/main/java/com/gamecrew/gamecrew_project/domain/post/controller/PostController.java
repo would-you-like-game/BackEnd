@@ -2,6 +2,7 @@ package com.gamecrew.gamecrew_project.domain.post.controller;
 
 import com.gamecrew.gamecrew_project.domain.post.dto.request.PostRequestDto;
 import com.gamecrew.gamecrew_project.domain.post.dto.response.PostResponseDto;
+import com.gamecrew.gamecrew_project.domain.post.dto.response.PostsResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.service.PostService;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
@@ -21,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -39,7 +39,7 @@ public class PostController {
     public MessageResponseDto createPost(@RequestPart("post") PostRequestDto requestDto,
                                          @RequestPart("photos") List<MultipartFile> photos,
                                          @AuthenticationPrincipal UserDetailsImpl userDetails
-    )throws IOException {
+    ) throws IOException {
         User user = userDetails.getUser();
         postService.createPost(requestDto, user, photos);
         return new MessageResponseDto(Message.POST_SUCCESSFUL, HttpStatus.OK);
@@ -52,7 +52,7 @@ public class PostController {
     })
     @PutMapping("/{postId}")
     public MessageResponseDto updatePost(@PathVariable Long postId, @RequestBody PostRequestDto requestDto,
-                                         @AuthenticationPrincipal UserDetailsImpl userDetails){
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         postService.updatePost(postId, requestDto, user);
         return new MessageResponseDto(Message.POST_PUT_SUCCESSFUL, HttpStatus.OK);
@@ -65,7 +65,7 @@ public class PostController {
     })
     @DeleteMapping("/{postId}")
     public MessageResponseDto deletePost(@PathVariable Long postId,
-                                        @AuthenticationPrincipal UserDetailsImpl userDetails){
+                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         User user = userDetails.getUser();
         postService.deletePost(postId, user);
         return new MessageResponseDto(Message.POST_DELETE_SUCCESSFUL, HttpStatus.OK);
@@ -80,50 +80,22 @@ public class PostController {
     public PostResponseDto getPost(@PathVariable("postId") Long postId,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(Objects.isNull(userDetails)){
-            postService.updateView(postId);
             return postService.getPost(postId,null);
         }
         User user = userDetails.getUser();
-        postService.updateView(postId);
         return postService.getPost(postId,user);
     }
 
-    @Operation(summary = "게시글 페이지네이션", description = "게시글 페이지네이션")
+    @Operation(summary = "게시글 전체조회", description = "게시글 전체조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = @Content(schema = @Schema(implementation = ResponseEntity.class))),
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = ResponseEntity.class)))
     })
-    @GetMapping("/category")
-    //ResponseEntity를 안쓰려면 어떻게 할 수 있나? ResponseEntity의 반환값을 다른 방식으로 하려면?? PostResponseDto를 쓰려면?? 아니면 페이지네이션용 Dto를 따로 만들어야 하나??
-    public ResponseEntity<Map<String, Object>> getCategoryPost(
-            @RequestParam("category") String category,
-            @RequestParam("page") int page,
-            @RequestParam("size") int size) {
-
-        Map<String, Object> pageNationResponseDtoList = postService.getCategoryPost(
-                category,
-                page - 1,
-                size
-        );
-        return ResponseEntity.ok(pageNationResponseDtoList);
+    @GetMapping("")
+    public PostsResponseDto getCategoryPost(
+            @RequestParam String category,
+            @RequestParam int page,
+            @RequestParam int size) {
+        return postService.getCategoryPost(category, page - 1, size);
     }
-
-//    @PostMapping("/{postId}")
-//    public JoinPlayerResponseDto createJoinApply(@PathVariable("postId") Long postId,
-//                                                 @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//
-//        User user = userDetails.getUser();
-//        JoinPlayerResponseDto joinPlayerResponseDto;
-//
-//        try {
-//            joinPlayerResponseDto = postService.createJoinApply(postId, user);
-//        } catch (Exception e) {
-//            return joinPlayerResponseDto = new JoinPlayerResponseDto(null, e.getMessage());
-//        }
-//
-//        return joinPlayerResponseDto;
-//    }
-
-
-
 }

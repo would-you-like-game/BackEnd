@@ -7,8 +7,6 @@ import com.gamecrew.gamecrew_project.domain.user.repository.AuthRepository;
 import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.exception.CustomException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
-import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
-import com.gamecrew.gamecrew_project.global.response.constant.Message;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;

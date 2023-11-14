@@ -28,6 +28,7 @@ public class ErrorMessage {
     public static final String INVALID_TITLE_LENGTH = "제목은 최소 1자 이상, 최대 20자 이하로 입력해야합니다.";
     public static final String INVALID_CONTENT_LENGTH = "내용은 최소 1자 이상, 최대 300자 이하로 입력해야합니다.";
     public static final String INVALID_TOTAL_NUMBER = "인원은 1~255명 까지 가능합니다.";
+    public static final String NON_EXISTENT_POST = "해당 게시글은 존재하지 않습니다.";
 
 
 

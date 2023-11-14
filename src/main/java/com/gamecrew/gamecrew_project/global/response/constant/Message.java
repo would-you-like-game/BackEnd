@@ -9,6 +9,7 @@ public class Message {
     public static final String CREATE_CHAT_ROOM = "채팅방을 생성하였습니다.";
     public static final String SEARCH_CHAT_ROOM = "채팅방 조회에 성공했습니다.";
     public static final String POST_SUCCESSFUL = "게시물 등록에 성공했습니다.";
+    public static final String GET_POST_SUCCESSFUL = "게시물 조회에 성공했습니다.";
     public static final String POST_PUT_SUCCESSFUL = "게시물을 수정하였습니다.";
     public static final String POST_DELETE_SUCCESSFUL = "게시물을 삭제하였습니다.";
     public static final String REGISTRATION_COMPLETED = "점수가 정상적으로 반영되었습니다.";

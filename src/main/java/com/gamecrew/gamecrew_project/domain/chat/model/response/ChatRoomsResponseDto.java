@@ -54,5 +54,4 @@ public class ChatRoomsResponseDto {
             this.size = size;
         }
     }
-
 }
