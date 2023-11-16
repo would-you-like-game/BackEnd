@@ -7,6 +7,7 @@ import com.gamecrew.gamecrew_project.domain.user.entity.TotalRating;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.domain.user.repository.TotalRatingRepository;
 import com.gamecrew.gamecrew_project.domain.user.repository.RecordOfRatingsRepository;
+import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.exception.CustomException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class RatingService {
     private final TotalRatingRepository totalRatingRepository;
     private final RecordOfRatingsRepository recordOfRatingsRepository;
+    private final UserRepository userRepository;
     public void registrationOfRatings(UserRatingRequestDto userRatingRequestDto, User evaluator, Long evaluated_user) {
         int manner = userRatingRequestDto.getManner();
         int participation = userRatingRequestDto.getParticipation();
@@ -62,11 +64,24 @@ public class RatingService {
         }
     }
     public UserTotalRatingResponseDto getUserRating(Long evaluated_user) {
-        Optional<TotalRating> checkUser= totalRatingRepository.findByUserId(evaluated_user);
-
-        if (checkUser.isEmpty()){
+        Optional<User> user= userRepository.findByUserId(evaluated_user);
+        if (!user.isPresent()){
             throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST);
         }
+
+        Optional<TotalRating> checkUser= totalRatingRepository.findByUserId(evaluated_user);
+        if (checkUser.isEmpty())
+        {
+            double totalManner = 4.0;
+            double totalParticipation =4.0;
+            double totalGamingSkill =4.0;
+            double totalEnjoyable =4.0;
+            double totalSociability =4.0;
+            double totalRating =4.0;
+
+            return new UserTotalRatingResponseDto(totalManner, totalParticipation, totalGamingSkill, totalEnjoyable, totalSociability, totalRating);
+        }
+
         TotalRating existingTotalRating = checkUser.get();
         double totalManner = existingTotalRating.getTotalManner();
         double totalParticipation = existingTotalRating.getTotalParticipation();

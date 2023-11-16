@@ -8,6 +8,7 @@ import com.gamecrew.gamecrew_project.domain.post.entity.Post;
 import com.gamecrew.gamecrew_project.domain.post.entity.PostImg;
 import com.gamecrew.gamecrew_project.domain.post.repository.PostImgRepository;
 import com.gamecrew.gamecrew_project.domain.post.repository.PostRepository;
+import com.gamecrew.gamecrew_project.domain.post.type.CategoryType;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.global.exception.CustomException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
@@ -95,10 +96,10 @@ public class PostService {
     }
 
 
-    public PostsResponseDto getCategoryPost(String category, int page, int size) {
+    public PostsResponseDto getCategoryPost(CategoryType category, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        if (category.equals("all")) {
+        if (category.equals(CategoryType.all)) {
             Page<Post> postList = postRepository.findAll(pageable);
 
             // Post 객체를 PostResultDto 객체로 변환
@@ -109,7 +110,7 @@ public class PostService {
             return new PostsResponseDto(Message.GET_POST_SUCCESSFUL, postList.getTotalPages(), postList.getTotalElements(), size, PostResultDtos);
 
         } else {
-            Page<Post> postListCategory = postRepository.findAllByCategory(category, pageable);
+            Page<Post> postListCategory = postRepository.findAllByCategory(category.name(), pageable);
 
             List<PostResultDto> PostResultDtos = postListCategory.getContent().stream()
                     .map(PostResultDto::new)
