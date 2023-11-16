@@ -4,6 +4,7 @@ import com.gamecrew.gamecrew_project.domain.post.dto.request.PostRequestDto;
 import com.gamecrew.gamecrew_project.domain.post.dto.response.PostResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.dto.response.PostsResponseDto;
 import com.gamecrew.gamecrew_project.domain.post.service.PostService;
+import com.gamecrew.gamecrew_project.domain.post.type.CategoryType;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.global.response.MessageResponseDto;
 import com.gamecrew.gamecrew_project.global.response.constant.Message;
@@ -93,7 +94,7 @@ public class PostController {
     })
     @GetMapping("")
     public PostsResponseDto getCategoryPost(
-            @RequestParam String category,
+            @RequestParam CategoryType category,
             @RequestParam int page,
             @RequestParam int size) {
         return postService.getCategoryPost(category, page - 1, size);
