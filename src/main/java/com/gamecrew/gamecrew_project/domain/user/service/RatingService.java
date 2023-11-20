@@ -5,15 +5,19 @@ import com.gamecrew.gamecrew_project.domain.user.dto.response.UserTotalRatingRes
 import com.gamecrew.gamecrew_project.domain.user.entity.RecordOfRatings;
 import com.gamecrew.gamecrew_project.domain.user.entity.TotalRating;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
-import com.gamecrew.gamecrew_project.domain.user.repository.TotalRatingRepository;
 import com.gamecrew.gamecrew_project.domain.user.repository.RecordOfRatingsRepository;
+import com.gamecrew.gamecrew_project.domain.user.repository.TotalRatingRepository;
 import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.exception.CustomException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,6 +26,8 @@ public class RatingService {
     private final TotalRatingRepository totalRatingRepository;
     private final RecordOfRatingsRepository recordOfRatingsRepository;
     private final UserRepository userRepository;
+
+    @Transactional
     public void registrationOfRatings(UserRatingRequestDto userRatingRequestDto, User evaluator, Long evaluated_user) {
         int manner = userRatingRequestDto.getManner();
         int participation = userRatingRequestDto.getParticipation();
@@ -31,38 +37,58 @@ public class RatingService {
         Long evaluatorId =evaluator.getUserId();
 
         Optional<TotalRating> checkRating = totalRatingRepository.findByUserId(evaluated_user);
+        LocalDateTime now = LocalDateTime.now();
+
         if (checkRating.isEmpty()){
             double totalRating = (double)(manner + participation + gamingSkill + enjoyable + sociability) / 5 ;
 
-            RecordOfRatings ratings = new RecordOfRatings(evaluated_user ,evaluatorId, manner, participation, gamingSkill, enjoyable, sociability, totalRating);
+
+            RecordOfRatings ratings = new RecordOfRatings(evaluated_user ,evaluatorId, manner, participation, gamingSkill, enjoyable, sociability, totalRating, now);
             recordOfRatingsRepository.save(ratings);
 
             TotalRating totalrating = new TotalRating(evaluated_user, manner, participation, gamingSkill, enjoyable, sociability, totalRating);
             totalRatingRepository.save(totalrating);
 
         } else if (checkRating.isPresent()) {
-            TotalRating existingTotalRating = checkRating.get();
+            PageRequest pageable = PageRequest.of(0, 9);
+            List<RecordOfRatings> beforeRatings = recordOfRatingsRepository.findTop9ByUserIdOrderByRecordedAtDesc(evaluated_user, pageable);
 
-            //있으면 저장된 점수 + 새로 들어온 점수 더하기 + /2
-            double totalManner = (existingTotalRating.getTotalManner() + manner)/2;
-            double totalParticipation = (existingTotalRating.getTotalParticipation() + participation)/2;
-            double totalGamingSkill = (existingTotalRating.getTotalGamingSkill() + gamingSkill)/2;
-            double totalEnjoyable =(existingTotalRating.getTotalEnjoyable() + enjoyable)/2;
-            double totalSociability = (existingTotalRating.getTotalSociability() + sociability)/2;
-            double total =(totalManner + totalParticipation + totalGamingSkill + totalEnjoyable + totalSociability)/5;
+            double sumManner = manner;
+            double sumParticipation = participation;
+            double sumGamingSkill = gamingSkill;
+            double sumEnjoyable = enjoyable;
+            double sumSociability = sociability;
 
-            existingTotalRating.setTotalManner(totalManner);
-            existingTotalRating.setTotalParticipation(totalParticipation);
-            existingTotalRating.setTotalGamingSkill(totalGamingSkill);
-            existingTotalRating.setTotalEnjoyable(totalEnjoyable);
-            existingTotalRating.setTotalSociability(totalSociability);
-            existingTotalRating.setTotalRating(total);
+            for (RecordOfRatings rating : beforeRatings) {
+                sumManner += rating.getManner();
+                sumParticipation += rating.getParticipation();
+                sumGamingSkill += rating.getGamingSkill();
+                sumEnjoyable += rating.getEnjoyable();
+                sumSociability += rating.getSociability();
+            }
 
-            double totalRating = (double)(manner + participation + gamingSkill + enjoyable + sociability) / 5 ;
-            RecordOfRatings ratings = new RecordOfRatings(evaluated_user ,evaluatorId, manner, participation, gamingSkill, enjoyable, sociability, totalRating);
+            double totalManner = sumManner / (1.0 + beforeRatings.size());
+            double totalParticipation = sumParticipation / (1.0 + beforeRatings.size());
+            double totalGamingSkill = sumGamingSkill / (1.0 + beforeRatings.size());
+            double totalEnjoyable = sumEnjoyable / (1.0 + beforeRatings.size());
+            double totalSociability = sumSociability / (1.0 + beforeRatings.size());
+            double totalRating = (totalManner + totalParticipation + totalGamingSkill + totalEnjoyable + totalSociability) / 5;
+
+            RecordOfRatings ratings = new RecordOfRatings(evaluated_user ,evaluatorId, manner, participation, gamingSkill, enjoyable, sociability, totalRating, now);
             recordOfRatingsRepository.save(ratings);
+
+            // Update TotalRating
+            TotalRating totalRatingEntity = checkRating.get();
+            totalRatingEntity.setTotalManner(totalManner);
+            totalRatingEntity.setTotalParticipation(totalParticipation);
+            totalRatingEntity.setTotalGamingSkill(totalGamingSkill);
+            totalRatingEntity.setTotalEnjoyable(totalEnjoyable);
+            totalRatingEntity.setTotalSociability(totalSociability);
+            totalRatingEntity.setTotalRating(totalRating);
+            totalRatingRepository.save(totalRatingEntity);
         }
     }
+
     public UserTotalRatingResponseDto getUserRating(Long evaluated_user) {
         Optional<User> user= userRepository.findByUserId(evaluated_user);
         if (!user.isPresent()){
