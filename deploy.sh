@@ -19,4 +19,4 @@
  mkdir -p ./nohup  
 
  # nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME &
- nohup java -jar -Djava.net.preferIPv4Stack=true -Duser.timezone=Asia/Seoul $JAR_NAME 1>nohup/stdout.txt 2>nohup/stderr.txt &
+ nohup java -jar -Duser.timezone=Asia/Seoul $JAR_NAME 1>nohup/stdout.txt 2>nohup/stderr.txt &
