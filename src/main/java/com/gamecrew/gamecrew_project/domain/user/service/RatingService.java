@@ -1,7 +1,8 @@
 package com.gamecrew.gamecrew_project.domain.user.service;
 
 import com.gamecrew.gamecrew_project.domain.user.dto.request.UserRatingRequestDto;
-import com.gamecrew.gamecrew_project.domain.user.dto.response.UserTotalRatingResponseDto;
+import com.gamecrew.gamecrew_project.domain.user.dto.response.UserRatingResultDto;
+import com.gamecrew.gamecrew_project.domain.user.dto.response.UserRatingsResponseDto;
 import com.gamecrew.gamecrew_project.domain.user.entity.RecordOfRatings;
 import com.gamecrew.gamecrew_project.domain.user.entity.TotalRating;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
@@ -10,8 +11,12 @@ import com.gamecrew.gamecrew_project.domain.user.repository.TotalRatingRepositor
 import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.global.exception.CustomException;
 import com.gamecrew.gamecrew_project.global.exception.constant.ErrorMessage;
+import com.gamecrew.gamecrew_project.global.response.constant.Message;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -89,32 +95,30 @@ public class RatingService {
         }
     }
 
-    public UserTotalRatingResponseDto getUserRating(Long evaluated_user) {
-        Optional<User> user= userRepository.findByUserId(evaluated_user);
-        if (!user.isPresent()){
-            throw new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST);
-        }
 
-        Optional<TotalRating> checkUser= totalRatingRepository.findByUserId(evaluated_user);
-        if (checkUser.isEmpty())
-        {
-            double totalManner = 4.0;
-            double totalParticipation =4.0;
-            double totalGamingSkill =4.0;
-            double totalEnjoyable =4.0;
-            double totalSociability =4.0;
-            double totalRating =4.0;
+    public UserRatingsResponseDto getUserRatings(Long evaluatedUser, int page, int size) {
+        userRepository.findByUserId(evaluatedUser).orElseThrow(
+                ()-> new CustomException(ErrorMessage.NON_EXISTENT_USER, HttpStatus.BAD_REQUEST));
 
-            return new UserTotalRatingResponseDto(totalManner, totalParticipation, totalGamingSkill, totalEnjoyable, totalSociability, totalRating);
-        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "recordedAt"));
+        Page<RecordOfRatings> recordPage = recordOfRatingsRepository.findByUserId(pageable, evaluatedUser);
 
-        TotalRating existingTotalRating = checkUser.get();
-        double totalManner = existingTotalRating.getTotalManner();
-        double totalParticipation = existingTotalRating.getTotalParticipation();
-        double totalGamingSkill = existingTotalRating.getTotalGamingSkill();
-        double totalEnjoyable =existingTotalRating.getTotalEnjoyable();
-        double totalSociability = existingTotalRating.getTotalSociability();
-        double total = existingTotalRating.getTotalRating();
-        return new UserTotalRatingResponseDto(totalManner, totalParticipation, totalGamingSkill, totalEnjoyable, totalSociability, total);
+        List<UserRatingResultDto> userRatingResultDtoList = recordPage.getContent().stream()
+                .map(record -> new UserRatingResultDto(
+                        record.getEvaluator(),
+                        record.getManner(),
+                        record.getParticipation(),
+                        record.getGamingSkill(),
+                        record.getEnjoyable(),
+                        record.getSociability()
+                )).collect(Collectors.toList());
+
+        return new UserRatingsResponseDto(
+                Message.GET_RATINGS_SUCCESSFUL,
+                recordPage.getTotalPages(),
+                recordPage.getTotalElements(),
+                size,
+                userRatingResultDtoList
+        );
     }
 }

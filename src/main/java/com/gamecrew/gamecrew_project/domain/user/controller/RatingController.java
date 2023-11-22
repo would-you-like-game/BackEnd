@@ -1,7 +1,7 @@
 package com.gamecrew.gamecrew_project.domain.user.controller;
 
 import com.gamecrew.gamecrew_project.domain.user.dto.request.UserRatingRequestDto;
-import com.gamecrew.gamecrew_project.domain.user.dto.response.UserTotalRatingResponseDto;
+import com.gamecrew.gamecrew_project.domain.user.dto.response.UserRatingsResponseDto;
 import com.gamecrew.gamecrew_project.domain.user.entity.User;
 import com.gamecrew.gamecrew_project.domain.user.repository.UserRepository;
 import com.gamecrew.gamecrew_project.domain.user.service.RatingService;
@@ -36,9 +36,13 @@ public class RatingController {
         return new MessageResponseDto(Message.REGISTRATION_COMPLETED, HttpStatus.OK);
     }
 
-    //유저의 평점을 가져오는 API
+    //유저의 평가들을 가져오는 API
     @GetMapping("/rating/{evaluated_user}")
-    public UserTotalRatingResponseDto getUserRating(@PathVariable Long evaluated_user){
-        return ratingService.getUserRating(evaluated_user);
+    public UserRatingsResponseDto getUserRatings(
+            @PathVariable Long evaluated_user,
+            @RequestParam int page,
+            @RequestParam int size
+            ){
+        return ratingService.getUserRatings(evaluated_user, page-1, size);
     }
 }
