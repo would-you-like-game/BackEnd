@@ -16,4 +16,5 @@ public class Message {
     public static final String PASSWORD_UPDATE_SUCCESSFUL = "비밀번호를 수정하였습니다.";
     public static final String PASSWORD_MATCH_SUCCESSFUL = "비밀번호가 일치합니다.";
     public static final String USER_IMG_UPDATE_SUCCESSFUL = "유저 이미지를 수정하였습니다.";
+    public static final String GET_RATINGS_SUCCESSFUL = "평가 기록을 조회하였습니다.";
 }
