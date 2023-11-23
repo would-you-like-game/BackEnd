@@ -65,7 +65,16 @@ public class Post extends Auditing {
         }
     }
 
-    public void increaseViewCount() {
-        this.postViewCount += 1;
+//    public void increaseViewCount() {
+//        this.postViewCount += 1;
+//    }
+public void increaseViewCount() {
+    // postViewCount가 null이면 0으로 초기화
+    if (this.postViewCount == null) {
+        this.postViewCount = 0L; // 혹은 다른 초기값으로 설정
+    }
+
+    // 기존 로직 계속 수행
+    this.postViewCount += 1;
     }
 }
