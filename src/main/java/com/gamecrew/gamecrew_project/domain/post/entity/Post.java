@@ -36,7 +36,7 @@ public class Post extends Auditing {
     @Column(name = "currentNum", nullable = false)
     private Long currentNumber = 1L;
 
-    private Long postViewCount = 0L;
+    private Long postViewCount;
 
     public Post(PostRequestDto requestDto, User user){
         this.title = requestDto.getTitle();

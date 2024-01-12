@@ -13,6 +13,7 @@ public class PostResponseDto {
     private String title;
     private String content;
     private Long totalNumber; // 전체 참가자 수
+    private Long postViewCount;
 
     private Long userId;
     private String nickname;
@@ -31,6 +32,7 @@ public class PostResponseDto {
         this.content = post.getContent();
         this.totalNumber = post.getTotalNumber();
         this.createdAt = post.getCreatedAt();
+        this.postViewCount = post.getPostViewCount();
 
         this.userId = post.getUser().getUserId();
         this.nickname = post.getUser().getNickname();
