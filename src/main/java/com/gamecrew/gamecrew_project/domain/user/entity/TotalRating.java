@@ -47,6 +47,10 @@ public class TotalRating {
         this.totalRating = Math.round(totalRating * 2) / 2.0;;
     }
 
+    public TotalRating(Long userId) {
+        this.userId = userId;
+    }
+
     public void setTotalManner(double totalManner) {
         this.totalManner = Math.round(totalManner * 2) / 2.0;;
     }

@@ -20,4 +20,12 @@ public class UserRatingRequestDto {
 
     @Min(0) @Max(10)
     private int sociability;
+
+    public UserRatingRequestDto(int manner, int participation, int gamingSkill, int enjoyable, int sociability) {
+        this.manner = manner;
+        this.participation =  participation;
+        this.gamingSkill = gamingSkill;
+        this.enjoyable = enjoyable;
+        this.sociability = sociability;
+    }
 }

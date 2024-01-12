@@ -78,7 +78,7 @@ public class PostController {
             @ApiResponse(responseCode = "400", description = "bad request operation", content = @Content(schema = @Schema(implementation = PostResponseDto.class)))
     })
     @GetMapping("/{postId}")
-    public PostResponseDto getPost(@PathVariable("postId") Long postId,
+    public PostResponseDto getPost(@PathVariable Long postId,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         if(Objects.isNull(userDetails)){
             return postService.getPost(postId,null);

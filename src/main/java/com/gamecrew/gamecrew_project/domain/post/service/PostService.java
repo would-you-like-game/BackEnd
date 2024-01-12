@@ -80,6 +80,7 @@ public class PostService {
         postRepository.delete(post);
     }
 
+    @Transactional
     public PostResponseDto getPost(Long postId, User user) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new CustomException(ErrorMessage.NON_EXISTENT_POST, HttpStatus.BAD_REQUEST));

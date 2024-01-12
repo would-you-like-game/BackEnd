@@ -30,3 +30,5 @@ public class ChatRoomController {
         return chatRoomService.getChatRooms(userId, page-1, size);
     }
 }
+
+

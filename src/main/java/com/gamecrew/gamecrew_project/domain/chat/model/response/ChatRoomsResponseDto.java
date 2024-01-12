@@ -1,7 +1,7 @@
 package com.gamecrew.gamecrew_project.domain.chat.model.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.gamecrew.gamecrew_project.global.entity.Auditing;
+import com.gamecrew.gamecrew_project.global.response.CustomPageable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 public class ChatRoomsResponseDto {
     private String msg;
-    private ChatRoomPageable pageable;
+    private CustomPageable pageable;
     private List<ChatRoomsResultDto> result;
 
     public ChatRoomsResponseDto(
@@ -23,7 +23,7 @@ public class ChatRoomsResponseDto {
             List<ChatRoomsResultDto> chatRooms
     ){
         this.msg = msg;
-        this.pageable = new ChatRoomPageable(totalPages, totalElements, size);
+        this.pageable = new CustomPageable(totalPages, totalElements, size);
         this.result = chatRooms;
     }
 
@@ -39,19 +39,6 @@ public class ChatRoomsResponseDto {
             this.nickname = nickname;
             this.userImg = userImg;
             this.modifiedAt = modifiedAt;
-        }
-    }
-
-    @Getter
-    private class ChatRoomPageable {
-        private int totalPages;
-        private long totalElements;
-        private int size;
-
-        public ChatRoomPageable(int totalPages, long totalElements, int size) {
-            this.totalPages = totalPages;
-            this.totalElements = totalElements;
-            this.size = size;
         }
     }
 }
